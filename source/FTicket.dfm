@@ -1,0 +1,113 @@
+object frmTicket: TfrmTicket
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Ticket'
+  ClientHeight = 151
+  ClientWidth = 399
+  Color = 1973790
+  Constraints.MaxHeight = 190
+  Constraints.MaxWidth = 415
+  Constraints.MinHeight = 190
+  Constraints.MinWidth = 415
+  Font.Charset = ANSI_CHARSET
+  Font.Color = clWhite
+  Font.Height = -13
+  Font.Name = 'Roboto'
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 15
+  object pnlMain: TPanel
+    Left = 0
+    Top = 0
+    Width = 399
+    Height = 151
+    Align = alClient
+    BevelOuter = bvNone
+    Color = 1973790
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitHeight = 146
+    object pnlTicket: TPanel
+      Left = 0
+      Top = 50
+      Width = 399
+      Height = 101
+      Align = alClient
+      BevelOuter = bvNone
+      Color = 1973790
+      ParentBackground = False
+      TabOrder = 0
+      ExplicitLeft = 104
+      ExplicitTop = 56
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object lblConfirm: TLabel
+        Left = 106
+        Top = 58
+        Width = 189
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Pressione "Enter" para confirmar'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Roboto'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblCancel: TLabel
+        Left = 113
+        Top = 74
+        Width = 174
+        Height = 15
+        Alignment = taCenter
+        Caption = 'Pressione "Esc" para cancelar'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Roboto'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edtTicket: TEdit
+        Left = 100
+        Top = 15
+        Width = 200
+        Height = 33
+        Alignment = taCenter
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = 'Roboto'
+        Font.Style = []
+        NumbersOnly = True
+        ParentFont = False
+        TabOrder = 0
+      end
+    end
+    object pnlTitle: TPanel
+      Left = 0
+      Top = 0
+      Width = 399
+      Height = 50
+      Align = alTop
+      BevelOuter = bvNone
+      Caption = 'Voc'#234' est'#225' trabalhando em qual Ticket?'
+      Color = 3947580
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -21
+      Font.Name = 'Roboto'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 1
+    end
+  end
+end
