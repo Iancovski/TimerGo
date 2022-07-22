@@ -2,20 +2,29 @@ program TimerGo;
 
 uses
   Vcl.Forms,
+  Windows,
   FMain in '..\source\FMain.pas' {frmMain},
   FLog in '..\source\FLog.pas' {frmLog},
   FTicket in '..\source\FTicket.pas' {frmTicket},
-  UUtils in '..\source\UUtils.pas',
-  FClearLog in '..\source\FClearLog.pas' {frmClearLog};
+  FClearLog in '..\source\FClearLog.pas' {frmClearLog},
+  UUtils in '..\source\UUtils.pas';
 
 {$R *.res}
 
+var
+  vHandle: THandle;
+  vHwnd: HWND;
 begin
-  Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmLog, frmLog);
-  Application.CreateForm(TfrmTicket, frmTicket);
-  Application.CreateForm(TfrmClearLog, frmClearLog);
-  Application.Run;
+  CreateMutex(nil, False, 'TimerGo');
+
+  if GetLastError <> ERROR_ALREADY_EXISTS then begin
+    Application.Initialize;
+    Application.Title := 'TimerGo';
+    Application.MainFormOnTaskbar := True;
+    Application.CreateForm(TfrmMain, frmMain);
+    Application.CreateForm(TfrmTicket, frmTicket);
+    Application.CreateForm(TfrmLog, frmLog);
+    Application.CreateForm(TfrmClearLog, frmClearLog);
+    Application.Run;
+  end;
 end.

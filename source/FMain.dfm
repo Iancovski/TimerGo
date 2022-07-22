@@ -2,14 +2,14 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   BorderStyle = bsNone
-  Caption = 'frmMain'
-  ClientHeight = 50
-  ClientWidth = 165
+  Caption = 'TimerGo'
+  ClientHeight = 45
+  ClientWidth = 155
   Color = clBtnFace
-  Constraints.MaxHeight = 50
-  Constraints.MaxWidth = 165
-  Constraints.MinHeight = 50
-  Constraints.MinWidth = 165
+  Constraints.MaxHeight = 45
+  Constraints.MaxWidth = 155
+  Constraints.MinHeight = 45
+  Constraints.MinWidth = 155
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -27,7 +27,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 8
-    Height = 50
+    Height = 45
     Align = alLeft
     BevelOuter = bvNone
     Color = 3947580
@@ -38,8 +38,8 @@ object frmMain: TfrmMain
   object pnlBackground: TPanel
     Left = 8
     Top = 0
-    Width = 157
-    Height = 50
+    Width = 147
+    Height = 45
     Align = alClient
     BevelOuter = bvNone
     Color = 1973790
@@ -49,7 +49,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 40
-      Height = 50
+      Height = 45
       Align = alLeft
       BevelOuter = bvNone
       TabOrder = 0
@@ -57,7 +57,7 @@ object frmMain: TfrmMain
         Left = 0
         Top = 0
         Width = 40
-        Height = 50
+        Height = 45
         Align = alClient
         Center = True
         Picture.Data = {
@@ -82,12 +82,13 @@ object frmMain: TfrmMain
         Visible = False
         OnClick = imgPlayClick
         ExplicitLeft = -6
+        ExplicitHeight = 50
       end
       object imgPlay: TImage
         Left = 0
         Top = 0
         Width = 40
-        Height = 50
+        Height = 45
         Align = alClient
         Center = True
         Picture.Data = {
@@ -112,21 +113,22 @@ object frmMain: TfrmMain
           300553A71D0000000049454E44AE426082}
         OnClick = imgPlayClick
         ExplicitLeft = -6
+        ExplicitHeight = 50
       end
     end
     object pnlMain: TPanel
       Left = 40
       Top = 0
-      Width = 97
-      Height = 50
+      Width = 87
+      Height = 45
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
       object lblTimer: TLabel
         Left = 0
         Top = 0
-        Width = 97
-        Height = 30
+        Width = 87
+        Height = 27
         Align = alTop
         AutoSize = False
         Caption = '00:00'
@@ -137,14 +139,13 @@ object frmMain: TfrmMain
         Font.Style = []
         ParentFont = False
         Layout = tlBottom
-        ExplicitLeft = -6
-        ExplicitTop = -6
+        ExplicitWidth = 97
       end
       object lblTicket: TLabel
         Left = 0
-        Top = 30
-        Width = 97
-        Height = 20
+        Top = 27
+        Width = 87
+        Height = 18
         Align = alClient
         Caption = '000000000000'
         Font.Charset = ANSI_CHARSET
@@ -158,8 +159,8 @@ object frmMain: TfrmMain
         ExplicitHeight = 15
       end
       object imgRecording: TImage
-        Left = 58
-        Top = 10
+        Left = 56
+        Top = 7
         Width = 8
         Height = 8
         Center = True
@@ -177,16 +178,16 @@ object frmMain: TfrmMain
       end
     end
     object pnlSettings: TPanel
-      Left = 137
+      Left = 127
       Top = 0
       Width = 20
-      Height = 50
+      Height = 45
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
       object imgLog: TImage
         Left = 0
-        Top = 26
+        Top = 21
         Width = 20
         Height = 24
         Align = alBottom
@@ -209,6 +210,7 @@ object frmMain: TfrmMain
           3A6D6F6469667900323032322D30362D31315431373A34383A35342B30303A30
           30185EB8200000000049454E44AE426082}
         OnClick = imgLogClick
+        ExplicitTop = 26
       end
       object imgClose: TImage
         Left = 0

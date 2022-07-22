@@ -3,13 +3,9 @@ object frmTicket: TfrmTicket
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Ticket'
-  ClientHeight = 151
+  ClientHeight = 158
   ClientWidth = 399
   Color = 1973790
-  Constraints.MaxHeight = 190
-  Constraints.MaxWidth = 415
-  Constraints.MinHeight = 190
-  Constraints.MinWidth = 415
   Font.Charset = ANSI_CHARSET
   Font.Color = clWhite
   Font.Height = -13
@@ -18,6 +14,7 @@ object frmTicket: TfrmTicket
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
@@ -26,51 +23,31 @@ object frmTicket: TfrmTicket
     Left = 0
     Top = 0
     Width = 399
-    Height = 151
+    Height = 158
     Align = alClient
     BevelOuter = bvNone
     Color = 1973790
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 146
     object pnlTicket: TPanel
       Left = 0
       Top = 50
       Width = 399
-      Height = 101
+      Height = 108
       Align = alClient
       BevelOuter = bvNone
       Color = 1973790
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = 104
-      ExplicitTop = 56
-      ExplicitWidth = 185
-      ExplicitHeight = 41
-      object lblConfirm: TLabel
-        Left = 106
-        Top = 58
-        Width = 189
-        Height = 15
-        Alignment = taCenter
-        Caption = 'Pressione "Enter" para confirmar'
+      object lblFix: TLabel
+        Left = 199
+        Top = 57
+        Width = 20
+        Height = 18
+        Caption = 'Fix'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
-        Font.Height = -13
-        Font.Name = 'Roboto'
-        Font.Style = []
-        ParentFont = False
-      end
-      object lblCancel: TLabel
-        Left = 113
-        Top = 74
-        Width = 174
-        Height = 15
-        Alignment = taCenter
-        Caption = 'Pressione "Esc" para cancelar'
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -13
+        Font.Height = -15
         Font.Name = 'Roboto'
         Font.Style = []
         ParentFont = False
@@ -86,9 +63,35 @@ object frmTicket: TfrmTicket
         Font.Height = -21
         Font.Name = 'Roboto'
         Font.Style = []
-        NumbersOnly = True
         ParentFont = False
         TabOrder = 0
+        OnChange = edtTicketChange
+        OnKeyPress = edtTicketKeyPress
+      end
+      object pnlShortcuts: TPanel
+        Left = 0
+        Top = 84
+        Width = 399
+        Height = 24
+        Align = alBottom
+        BevelOuter = bvNone
+        Caption = '[Enter] Confirma     [Esc] Cancela    [F] Fix'
+        Color = 3947580
+        ParentBackground = False
+        TabOrder = 2
+      end
+      object chkFix: TCheckBox
+        Left = 182
+        Top = 56
+        Width = 18
+        Height = 20
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Roboto'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
       end
     end
     object pnlTitle: TPanel
