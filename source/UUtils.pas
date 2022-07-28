@@ -10,6 +10,7 @@ function GetRecordTimeEnd(ARecord: String): TTime;
 function GetRecordTimeStart(ARecord: String): TTime;
 function GetTotalTime(ATicket: String; var ADays: Word): TTime;
 function iif(ACondition: Boolean; AResultTrue, AResultFalse: Variant): Variant;
+function OnlyNumbers(AString: String): String;
 function ReadIni(ASection, AIdent: String): String;
 procedure WriteIni(ASection, AIdent, AValue: String; AClear: Boolean = True);
 
@@ -79,6 +80,21 @@ begin
     Result := AResultTrue
   else
     Result := AResultFalse;
+end;
+
+function OnlyNumbers(AString: String): String;
+var
+  vChar: Integer;
+begin
+  Result := AString;
+
+  if Result.IsEmpty then
+    Exit;
+
+  for vChar := 1 to Result.Length + 1 do begin
+    if not StrToIntDef(Result[vChar], -1) in [0..9] then
+      Result := StringReplace(Result, Result[vChar], '', [rfReplaceAll, rfIgnoreCase]);
+  end;
 end;
 
 function ReadIni(ASection, AIdent: String): String;

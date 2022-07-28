@@ -44,7 +44,7 @@ type
     dbgRecords: TDBGrid;
     pnlRecordsTitle: TPanel;
     pnlSubtitleColor: TPanel;
-    Label1: TLabel;
+    lblSubtitleCaption: TLabel;
     procedure FormShow(Sender: TObject);
     procedure dbgRecordsDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
@@ -56,11 +56,15 @@ type
     procedure fmtTicketsTOTAL_TIME_FIXGetText(Sender: TField; var Text: string; DisplayText: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure fmtTicketsAfterScroll(DataSet: TDataSet);
   private
+    Loading: Boolean;
+
     procedure LoadRecords;
     procedure ColorGridLines(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure ClearLog(AOption: Integer);
+    procedure SetFixVisible;
   public
   end;
 
@@ -85,6 +89,12 @@ procedure TfrmLog.dbgTicketsDrawColumnCell(Sender: TObject; const Rect: TRect; D
 begin
   ColorGridLines(Sender, Rect, DataCol, Column, State);
   ShowScrollBar(dbgTickets.Handle, SB_HORZ, False);
+end;
+
+procedure TfrmLog.fmtTicketsAfterScroll(DataSet: TDataSet);
+begin
+  if not Loading then
+    SetFixVisible();
 end;
 
 procedure TfrmLog.fmtTicketsTOTAL_TIMEGetText(Sender: TField; var Text: string; DisplayText: Boolean);
@@ -129,6 +139,8 @@ var
   vIndexTicket, vIndexRecord: Integer;
   vDays: Word;
 begin
+  Loading := True;
+
   fmtTickets.EmptyDataSet;
   fmtRecords.EmptyDataSet;
 
@@ -210,7 +222,23 @@ begin
   finally
     vTickets.Free;
     vRecords.Free;
+
+    Loading := False;
   end;
+end;
+
+procedure TfrmLog.SetFixVisible;
+var
+  vFix: Boolean;
+begin
+  vFix := fmtRecords.Locate('FIX', True);
+
+  lblSubtitleCaption.Visible := vFix;
+  pnlSubtitleColor.Visible := vFix;
+  lblTotalTimeFix.Visible := vFix;
+  dbeTotalTimeFix.Visible := vFix;
+
+  fmtRecords.First;
 end;
 
 procedure TfrmLog.btnClearLogClick(Sender: TObject);

@@ -21,7 +21,10 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtTicketChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtTicketKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edtTicketKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
+    CtrlA, CtrlC, CtrlV: Boolean;
   public
     Confirmed: Boolean;
   end;
@@ -33,16 +36,33 @@ implementation
 
 {$R *.dfm}
 
+uses UUtils;
+
 procedure TfrmTicket.edtTicketChange(Sender: TObject);
 begin
   chkFix.Checked := False;
+  edtTicket.Text := OnlyNumbers(edtTicket.Text);
+end;
+
+procedure TfrmTicket.edtTicketKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  CtrlA := (Shift = [ssCtrl]) and (Key = 65);
+  CtrlC := (Shift = [ssCtrl]) and (Key = 67);
+  CtrlV := (Shift = [ssCtrl]) and (Key = 86);
 end;
 
 procedure TfrmTicket.edtTicketKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not((StrToIntDef(Key, -1) in [0 .. 9]) or (Key = #8)) then begin
+  if not((StrToIntDef(Key, -1) in [0 .. 9]) or (Key = #8) or (CtrlA or CtrlC or CtrlV)) then begin
     Key := #0;
   end;
+end;
+
+procedure TfrmTicket.edtTicketKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  CtrlA := False;
+  CtrlC := False;
+  CtrlV := False;
 end;
 
 procedure TfrmTicket.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -76,6 +96,9 @@ begin
   FormStyle := fsStayOnTop;
 
   Confirmed := False;
+
+  edtTicket.SetFocus;
+  edtTicket.SelectAll;
 end;
 
 end.

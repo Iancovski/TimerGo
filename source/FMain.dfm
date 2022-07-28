@@ -28,10 +28,14 @@ object frmMain: TfrmMain
     Top = 0
     Width = 8
     Height = 45
+    Cursor = crSizeAll
+    Hint = 'Mover'
     Align = alLeft
     BevelOuter = bvNone
     Color = 3947580
     ParentBackground = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 0
     OnMouseDown = pnlRepositionMouseDown
   end
@@ -58,8 +62,11 @@ object frmMain: TfrmMain
         Top = 0
         Width = 40
         Height = 45
+        Cursor = crHandPoint
+        Hint = 'Pausar registro de tempo'
         Align = alClient
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
           0020100400000089E36E3C0000000467414D410000B18F0BFC61050000000262
@@ -79,6 +86,7 @@ object frmMain: TfrmMain
           3032322D30362D31315431383A31313A31342B30303A3030477B5CDB00000025
           74455874646174653A6D6F6469667900323032322D30362D31315431383A3131
           3A31342B30303A30303626E4670000000049454E44AE426082}
+        ShowHint = True
         Visible = False
         OnClick = imgPlayClick
         ExplicitLeft = -6
@@ -89,8 +97,11 @@ object frmMain: TfrmMain
         Top = 0
         Width = 40
         Height = 45
+        Cursor = crHandPoint
+        Hint = 'Registrar tempo'
         Align = alClient
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
           0020100400000089E36E3C0000000467414D410000B18F0BFC61050000000262
@@ -111,6 +122,7 @@ object frmMain: TfrmMain
           315431383A31303A32312B30303A3030740E1FA1000000257445587464617465
           3A6D6F6469667900323032322D30362D31315431383A31303A32312B30303A30
           300553A71D0000000049454E44AE426082}
+        ShowHint = True
         OnClick = imgPlayClick
         ExplicitLeft = -6
         ExplicitHeight = 50
@@ -124,28 +136,13 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      object lblTimer: TLabel
-        Left = 0
-        Top = 0
-        Width = 87
-        Height = 27
-        Align = alTop
-        AutoSize = False
-        Caption = '00:00'
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -21
-        Font.Name = 'Roboto'
-        Font.Style = []
-        ParentFont = False
-        Layout = tlBottom
-        ExplicitWidth = 97
-      end
       object lblTicket: TLabel
         Left = 0
         Top = 27
         Width = 87
         Height = 18
+        Cursor = crHandPoint
+        Hint = 'Ticket'
         Align = alClient
         Caption = '000000000000'
         Font.Charset = ANSI_CHARSET
@@ -154,27 +151,99 @@ object frmMain: TfrmMain
         Font.Name = 'Roboto'
         Font.Style = []
         ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
         OnDblClick = lblTicketDblClick
         ExplicitWidth = 84
         ExplicitHeight = 15
       end
-      object imgRecording: TImage
-        Left = 56
-        Top = 7
-        Width = 8
-        Height = 8
-        Center = True
-        Picture.Data = {
-          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000080000
-          00080806000000C40FBE8B000000017352474200AECE1CE90000000467414D41
-          0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000000
-          904944415478DA63640082FFFFFFAB03A9762076668080BD405CC1C8C8788B11
-          2A791088DB80781154413C480110DB8314AC03320E00F11D209E0B55900AC4CA
-          406C0752F011C89007E2EB402C0155F01C88B581F8014C8102105F4353A003C4
-          F7400AD642DD700F886701312310A703B11210DB8014A8411574A039B21CEC06
-          A837D5A0DE74812AD80DC495406FDE0600B157337CB2862F1F0000000049454E
-          44AE426082}
-        Visible = False
+      object pnlTimer: TPanel
+        Left = 0
+        Top = 0
+        Width = 87
+        Height = 27
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 0
+        object lblTimer: TLabel
+          Left = 0
+          Top = 0
+          Width = 53
+          Height = 27
+          Hint = 'Tempo percorrido'
+          Align = alLeft
+          Caption = '00:00'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -21
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Layout = tlBottom
+          ExplicitHeight = 25
+        end
+        object imgRecording: TImage
+          AlignWithMargins = True
+          Left = 73
+          Top = 5
+          Width = 8
+          Height = 12
+          Margins.Top = 5
+          Margins.Right = 0
+          Margins.Bottom = 10
+          Align = alLeft
+          Center = True
+          Picture.Data = {
+            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000080000
+            00080806000000C40FBE8B000000017352474200AECE1CE90000000467414D41
+            0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000000
+            904944415478DA63640082FFFFFFAB03A9762076668080BD405CC1C8C8788B11
+            2A791088DB80781154413C480110DB8314AC03320E00F11D209E0B55900AC4CA
+            406C0752F011C89007E2EB402C0155F01C88B581F8014C8102105F4353A003C4
+            F7400AD642DD700F886701312310A703B11210DB8014A8411574A039B21CEC06
+            A837D5A0DE74812AD80DC495406FDE0600B157337CB2862F1F0000000049454E
+            44AE426082}
+          Visible = False
+          ExplicitLeft = 56
+          ExplicitTop = 7
+          ExplicitHeight = 8
+        end
+        object imgFix: TImage
+          AlignWithMargins = True
+          Left = 58
+          Top = 5
+          Width = 12
+          Height = 17
+          Hint = 'Fix'
+          Margins.Left = 5
+          Margins.Top = 5
+          Margins.Right = 0
+          Margins.Bottom = 5
+          Align = alLeft
+          Center = True
+          ParentShowHint = False
+          Picture.Data = {
+            0954506E67496D61676589504E470D0A1A0A0000000D494844520000000C0000
+            000C080600000056755CE7000000017352474200AECE1CE90000000467414D41
+            0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000001
+            3A4944415478DA6364C0019EBBB91902A91220F602E2754C7FFEE488EFDBF79D
+            119BE287DEDE6CACBF7FEF0632ED80F816104748EDDA75FEA5931327560D2FDC
+            DD4DFEFDFF7F12C86402E2CD40C57ECF80360215E760D5F0CCD5D59581917117
+            94FB1588F702B106108B606878EAEACA033209A8A11D8B594B5034BC707313F8
+            C7C090096416814C4392FA0BC4C7808AF3E11A5EB8BA8AFC6760E8FACFC81807
+            E43203F11B86FFFF7B181919CF00FDF389F1D7AF4B52070FFE046B007A480E48
+            5502713A1083C4801631D4FEFFFB7792F4DEBD5F905DC1F8DCDD5DFDFFFFFF0D
+            40B63F107302F17FC6FFFF17006D2A0686CE7B744F30024DDF03A44191C40515
+            5BC8F4FF7F8DC4EEDD6FB085202330469F01DDFE11C8160307DFFFFFE552BB77
+            DFC79502189FBBBA3600AD4F03B2AF0263295762D7AE1B0C780000ADDA6AAB9D
+            E601540000000049454E44AE426082}
+          ShowHint = True
+          Visible = False
+          ExplicitLeft = 51
+          ExplicitTop = 2
+        end
       end
     end
     object pnlSettings: TPanel
@@ -190,8 +259,12 @@ object frmMain: TfrmMain
         Top = 21
         Width = 20
         Height = 24
+        Cursor = crHandPoint
+        Hint = 'Ver registros de tempo'
+        Margins.Left = 5
         Align = alBottom
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000100000
           00101004000000E56AEBA90000000467414D410000B18F0BFC61050000000262
@@ -209,6 +282,7 @@ object frmMain: TfrmMain
           315431373A34383A35342B30303A30306903009C000000257445587464617465
           3A6D6F6469667900323032322D30362D31315431373A34383A35342B30303A30
           30185EB8200000000049454E44AE426082}
+        ShowHint = True
         OnClick = imgLogClick
         ExplicitTop = 26
       end
@@ -217,8 +291,11 @@ object frmMain: TfrmMain
         Top = 0
         Width = 20
         Height = 20
+        Cursor = crHandPoint
+        Hint = 'Fechar'
         Align = alTop
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D494844520000000A0000
           000A08060000008D32CFBD000000017352474200AECE1CE90000000467414D41
@@ -229,6 +306,7 @@ object frmMain: TfrmMain
           454AC9329896F5DEDF60F783F084ED4809549E4308576CB70EE69C177C1898DA
           8A9E4F3520F0747FAAC1A094BAFFA403985059301B2BFF9E661CB7000F48C106
           55E32460873F589A5A4DD4DBAA150000000049454E44AE426082}
+        ShowHint = True
         OnClick = imgCloseClick
       end
     end

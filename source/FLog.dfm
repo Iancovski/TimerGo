@@ -193,8 +193,8 @@ object frmLog: TfrmLog
       BevelOuter = bvNone
       TabOrder = 0
       object lblTotalTime: TLabel
-        Left = 410
-        Top = 10
+        Left = 436
+        Top = 11
         Width = 95
         Height = 19
         Caption = 'Tempo Total:'
@@ -206,8 +206,8 @@ object frmLog: TfrmLog
         ParentFont = False
       end
       object lblTotalTimeFix: TLabel
-        Left = 165
-        Top = 10
+        Left = 213
+        Top = 11
         Width = 130
         Height = 19
         Caption = 'Tempo Total (Fix):'
@@ -218,7 +218,7 @@ object frmLog: TfrmLog
         Font.Style = []
         ParentFont = False
       end
-      object Label1: TLabel
+      object lblSubtitleCaption: TLabel
         Left = 40
         Top = 0
         Width = 21
@@ -235,10 +235,10 @@ object frmLog: TfrmLog
         ExplicitHeight = 19
       end
       object dbeTotalTime: TDBEdit
-        Left = 510
+        Left = 536
         Top = 6
-        Width = 100
-        Height = 27
+        Width = 75
+        Height = 28
         AutoSelect = False
         DataField = 'TOTAL_TIME'
         DataSource = dsTickets
@@ -246,10 +246,10 @@ object frmLog: TfrmLog
         TabOrder = 0
       end
       object dbeTotalTimeFix: TDBEdit
-        Left = 300
+        Left = 348
         Top = 6
-        Width = 100
-        Height = 27
+        Width = 75
+        Height = 28
         AutoSelect = False
         DataField = 'TOTAL_TIME_FIX'
         DataSource = dsTickets
@@ -373,6 +373,7 @@ object frmLog: TfrmLog
   end
   object fmtTickets: TFDMemTable
     Active = True
+    AfterScroll = fmtTicketsAfterScroll
     FieldDefs = <
       item
         Name = 'TICKET'

@@ -16,14 +16,16 @@ type
     pnlPlayPause: TPanel;
     imgPlay: TImage;
     pnlMain: TPanel;
-    lblTimer: TLabel;
     lblTicket: TLabel;
     pnlSettings: TPanel;
     imgLog: TImage;
     imgPause: TImage;
     imgClose: TImage;
     Timer: TTimer;
+    pnlTimer: TPanel;
+    lblTimer: TLabel;
     imgRecording: TImage;
+    imgFix: TImage;
     procedure imgPlayClick(Sender: TObject);
     procedure imgLogClick(Sender: TObject);
     procedure pnlRepositionMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -44,16 +46,18 @@ type
     procedure SetPaused(const Value: Boolean);
     procedure SetTicket(const Value: String);
     procedure SetTotalTime(const Value: TTime);
+    procedure SetFix(const Value: Boolean);
 
   public
     IniFile: TIniFile;
     TimeStart: TDateTime;
     OldMinute, OldHour: Word;
     Days: Word;
+    ChangingTicket: Boolean;
 
     property Paused: Boolean read FPaused write SetPaused;
     property Ticket: String read FTicket write SetTicket;
-    property Fix: Boolean read FFix write FFix;
+    property Fix: Boolean read FFix write SetFix;
     property TotalTime: TTime read FTotalTime write SetTotalTime;
 
     procedure InitializeVariables;
@@ -107,11 +111,16 @@ begin
 end;
 
 function TfrmMain.GetTicket(ACloseIfCancel: Boolean = False): String;
+var
+  vFix: Boolean;
 begin
   Result := ReadIni('Config', 'Ticket');
 
+  vFix := Pos('#FIX', UpperCase(Result)) > 0;
+  Result := StringReplace(Result, '#Fix', '', [rfIgnoreCase]);
+
   frmTicket.edtTicket.Text := Result;
-  frmTicket.chkFix.Checked := Fix;
+  frmTicket.chkFix.Checked := vFix;
   frmTicket.ShowModal;
 
   if (ACloseIfCancel) and (not frmTicket.Confirmed) then begin
@@ -119,9 +128,13 @@ begin
   end;
 
   if (frmTicket.Confirmed) then begin
+    ChangingTicket := True;
+
     Result := frmTicket.edtTicket.Text;
     Fix := frmTicket.chkFix.Checked;
     TotalTime := GetTotalTime(Result, Days);
+
+    ChangingTicket := False;
   end;
 end;
 
@@ -202,6 +215,13 @@ begin
   end;
 end;
 
+procedure TfrmMain.SetFix(const Value: Boolean);
+begin
+  FFix := Value;
+
+  imgFix.Visible := Fix;
+end;
+
 procedure TfrmMain.SetPaused(const Value: Boolean);
 begin
   FPaused := Value;
@@ -223,7 +243,7 @@ end;
 procedure TfrmMain.SetTicket(const Value: String);
 begin
   FTicket := Value;
-  WriteIni('Config', 'Ticket', Ticket);
+  WriteIni('Config', 'Ticket', Ticket + iif(Fix, '#Fix', ''));
 
   lblTicket.Caption := Ticket;
 end;
@@ -232,10 +252,10 @@ procedure TfrmMain.SetTotalTime(const Value: TTime);
 begin
   FTotalTime := Value;
 
-  if MinuteOf(TotalTime) <> OldMinute then begin
+  if (MinuteOf(TotalTime) <> OldMinute) or (ChangingTicket) then begin
     OldMinute := MinuteOf(TotalTime);
 
-    if HourOf(TotalTime) < OldHour then
+    if (HourOf(TotalTime) < OldHour) and (not ChangingTicket) then
       Days := Days + 1;
 
     OldHour := HourOf(TotalTime);

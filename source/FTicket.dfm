@@ -63,10 +63,13 @@ object frmTicket: TfrmTicket
         Font.Height = -21
         Font.Name = 'Roboto'
         Font.Style = []
+        MaxLength = 20
         ParentFont = False
         TabOrder = 0
         OnChange = edtTicketChange
+        OnKeyDown = edtTicketKeyDown
         OnKeyPress = edtTicketKeyPress
+        OnKeyUp = edtTicketKeyUp
       end
       object pnlShortcuts: TPanel
         Left = 0
