@@ -220,6 +220,8 @@ begin
   FFix := Value;
 
   imgFix.Visible := Fix;
+  if imgFix.Visible then
+    imgRecording.Left := 999;
 end;
 
 procedure TfrmMain.SetPaused(const Value: Boolean);
