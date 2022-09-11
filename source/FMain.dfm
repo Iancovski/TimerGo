@@ -153,7 +153,7 @@ object frmMain: TfrmMain
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        OnDblClick = lblTicketDblClick
+        OnClick = lblTicketClick
         ExplicitWidth = 84
         ExplicitHeight = 15
       end
@@ -186,7 +186,7 @@ object frmMain: TfrmMain
         end
         object imgRecording: TImage
           AlignWithMargins = True
-          Left = 73
+          Left = 56
           Top = 5
           Width = 8
           Height = 12
@@ -206,43 +206,8 @@ object frmMain: TfrmMain
             A837D5A0DE74812AD80DC495406FDE0600B157337CB2862F1F0000000049454E
             44AE426082}
           Visible = False
-          ExplicitLeft = 56
           ExplicitTop = 7
           ExplicitHeight = 8
-        end
-        object imgFix: TImage
-          AlignWithMargins = True
-          Left = 58
-          Top = 5
-          Width = 12
-          Height = 17
-          Hint = 'Fix'
-          Margins.Left = 5
-          Margins.Top = 5
-          Margins.Right = 0
-          Margins.Bottom = 5
-          Align = alLeft
-          Center = True
-          ParentShowHint = False
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D494844520000000C0000
-            000C080600000056755CE7000000017352474200AECE1CE90000000467414D41
-            0000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000001
-            3A4944415478DA6364C0019EBBB91902A91220F602E2754C7FFEE488EFDBF79D
-            119BE287DEDE6CACBF7FEF0632ED80F816104748EDDA75FEA5931327560D2FDC
-            DD4DFEFDFF7F12C86402E2CD40C57ECF80360215E760D5F0CCD5D59581917117
-            94FB1588F702B106108B606878EAEACA033209A8A11D8B594B5034BC707313F8
-            C7C090096416814C4392FA0BC4C7808AF3E11A5EB8BA8AFC6760E8FACFC81807
-            E43203F11B86FFFF7B181919CF00FDF389F1D7AF4B52070FFE046B007A480E48
-            5502713A1083C4801631D4FEFFFB7792F4DEBD5F905DC1F8DCDD5DFDFFFFFF0D
-            40B63F107302F17FC6FFFF17006D2A0686CE7B744F30024DDF03A44191C40515
-            5BC8F4FF7F8DC4EEDD6FB085202330469F01DDFE11C8160307DFFFFFE552BB77
-            DFC79502189FBBBA3600AD4F03B2AF0263295762D7AE1B0C780000ADDA6AAB9D
-            E601540000000049454E44AE426082}
-          ShowHint = True
-          Visible = False
-          ExplicitLeft = 51
-          ExplicitTop = 2
         end
       end
     end

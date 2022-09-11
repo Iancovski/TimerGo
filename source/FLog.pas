@@ -24,17 +24,6 @@ type
     pnlTicketsGrid: TPanel;
     dbgTickets: TDBGrid;
     btnClearLog: TSpeedButton;
-    fmtRecordsTICKET: TStringField;
-    fmtRecordsDATE: TDateField;
-    fmtRecordsTIME_START: TTimeField;
-    fmtRecordsTIME_END: TTimeField;
-    fmtRecordsTOTAL_TIME: TTimeField;
-    fmtRecordsFIX: TBooleanField;
-    fmtTicketsTICKET: TStringField;
-    fmtTicketsTOTAL_TIME: TTimeField;
-    fmtTicketsDAYS: TWordField;
-    fmtTicketsTOTAL_TIME_FIX: TTimeField;
-    fmtTicketsDAYS_FIX: TWordField;
     pnlRecordsTotal: TPanel;
     lblTotalTime: TLabel;
     lblTotalTimeFix: TLabel;
@@ -43,8 +32,27 @@ type
     pnlRecordsGrid: TPanel;
     dbgRecords: TDBGrid;
     pnlRecordsTitle: TPanel;
-    pnlSubtitleColor: TPanel;
-    lblSubtitleCaption: TLabel;
+    pnlRecordsSubtitle: TPanel;
+    pnlTicketsSubtitle: TPanel;
+    pnlSubtitleHelp: TPanel;
+    pnlSubtitleFix: TPanel;
+    pnlSubtitleTest: TPanel;
+    pnlSubtitleDevelopment: TPanel;
+    pnlSubtitleAnalysis: TPanel;
+    lblSubtitle: TLabel;
+    fmtRecordsTICKET: TStringField;
+    fmtRecordsDATE: TDateField;
+    fmtRecordsTIME_START: TTimeField;
+    fmtRecordsTIME_END: TTimeField;
+    fmtRecordsTOTAL_TIME: TTimeField;
+    fmtRecordsTYPE: TStringField;
+    pnlSubtitleTicket: TPanel;
+    fmtTicketsTICKET: TStringField;
+    fmtTicketsTOTAL_TIME: TTimeField;
+    fmtTicketsDAYS: TIntegerField;
+    fmtTicketsTOTAL_TIME_FIX: TTimeField;
+    fmtTicketsDAYS_FIX: TIntegerField;
+    fmtTicketsCURRENT: TBooleanField;
     procedure FormShow(Sender: TObject);
     procedure dbgRecordsDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
@@ -56,7 +64,6 @@ type
     procedure fmtTicketsTOTAL_TIME_FIXGetText(Sender: TField; var Text: string; DisplayText: Boolean);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure fmtTicketsAfterScroll(DataSet: TDataSet);
   private
     Loading: Boolean;
 
@@ -64,7 +71,6 @@ type
     procedure ColorGridLines(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure ClearLog(AOption: Integer);
-    procedure SetFixVisible;
   public
   end;
 
@@ -89,12 +95,6 @@ procedure TfrmLog.dbgTicketsDrawColumnCell(Sender: TObject; const Rect: TRect; D
 begin
   ColorGridLines(Sender, Rect, DataCol, Column, State);
   ShowScrollBar(dbgTickets.Handle, SB_HORZ, False);
-end;
-
-procedure TfrmLog.fmtTicketsAfterScroll(DataSet: TDataSet);
-begin
-  if not Loading then
-    SetFixVisible();
 end;
 
 procedure TfrmLog.fmtTicketsTOTAL_TIMEGetText(Sender: TField; var Text: string; DisplayText: Boolean);
@@ -129,15 +129,20 @@ begin
   FormStyle := fsStayOnTop;
 
   LoadRecords();
-  fmtTickets.Locate('TICKET', frmMain.Ticket, []);
+  if fmtTickets.Locate('TICKET', frmMain.Ticket, []) then begin
+    fmtTickets.Edit;
+    fmtTicketsCURRENT.AsBoolean := True;
+    fmtTickets.Post;
+  end;
 end;
 
 procedure TfrmLog.LoadRecords;
 var
   vTickets, vRecords: TStrings;
-  vTicketFix: String;
+  vTicket: String;
   vIndexTicket, vIndexRecord: Integer;
   vDays: Word;
+  vRecordType: TRecordType;
 begin
   Loading := True;
 
@@ -151,71 +156,39 @@ begin
     vRecords.Delimiter := ';';
 
     for vIndexTicket := 0 to vTickets.Count - 1 do begin
-      if Pos('#FIX', vTickets[vIndexTicket]) > 0 then
-        Continue;
-
-      vRecords.DelimitedText := ReadIni('Tickets', vTickets[vIndexTicket]);
+      vRecords.DelimitedText := ReadIni('TICKETS', vTickets[vIndexTicket]);
 
       if vRecords.Count = 0 then
         Continue;
 
-      fmtTickets.Append;
-      fmtTicketsTICKET.AsString := vTickets[vIndexTicket];
-      fmtTicketsTOTAL_TIME.AsDateTime := GetTotalTime(fmtTicketsTICKET.AsString, vDays);
-      fmtTicketsDAYS.AsInteger := vDays;
+      vTicket := vTickets[vIndexTicket];
+      vRecordType := StringToRecordType(Copy(vTicket, vTicket.Length, 1));
+      Delete(vTicket, vTicket.Length - 1, 2);
+
+      if fmtTickets.Locate('TICKET', vTicket, [loCaseInsensitive]) then
+        fmtTickets.Edit
+      else
+        fmtTickets.Append;
+
+      fmtTicketsTICKET.AsString := vTicket;
+      fmtTicketsTOTAL_TIME.AsDateTime := fmtTicketsTOTAL_TIME.AsDateTime +
+        GetTotalTime(vTickets[vIndexTicket], vDays);
+      fmtTicketsDAYS.AsInteger := fmtTicketsDAYS.AsInteger + vDays;
+      if vRecordType = rtFix then begin
+        fmtTicketsTOTAL_TIME_FIX.AsDateTime := fmtTicketsTOTAL_TIME_FIX.AsDateTime +
+          GetTotalTime(vTickets[vIndexTicket], vDays);
+        fmtTicketsDAYS_FIX.AsInteger := vDays;
+      end;
       fmtTickets.Post;
 
       for vIndexRecord := 0 to vRecords.Count - 1 do begin
         fmtRecords.Append;
-        fmtRecordsTICKET.AsString := vTickets[vIndexTicket];
+        fmtRecordsTICKET.AsString := vTicket;
         fmtRecordsDATE.AsDateTime := GetRecordDate(vRecords[vIndexRecord]);
         fmtRecordsTIME_START.AsDateTime := GetRecordTimeStart(vRecords[vIndexRecord]);
         fmtRecordsTIME_END.AsDateTime := GetRecordTimeEnd(vRecords[vIndexRecord]);
         fmtRecordsTOTAL_TIME.AsDateTime := fmtRecordsTIME_END.AsDateTime - fmtRecordsTIME_START.AsDateTime;
-        fmtRecordsFIX.AsBoolean := False;
-        fmtRecords.Post;
-      end;
-    end;
-
-    for vIndexTicket := 0 to vTickets.Count - 1 do begin
-      if Pos('#FIX', vTickets[vIndexTicket]) = 0 then
-        Continue;
-
-      vRecords.DelimitedText := ReadIni('Tickets', vTickets[vIndexTicket]);
-
-      if vRecords.Count = 0 then
-        Continue;
-
-      vTicketFix := vTickets[vIndexTicket];
-      Delete(vTicketFix, Pos('#FIX', vTicketFix), vTicketFix.Length - 1);
-
-      if fmtTickets.Locate('TICKET', vTicketFix, [loCaseInsensitive]) then begin
-        fmtTickets.Edit;
-        fmtTicketsTOTAL_TIME.AsDateTime := fmtTicketsTOTAL_TIME.AsDateTime +
-          GetTotalTime(vTickets[vIndexTicket], vDays);
-        fmtTicketsDAYS.AsInteger := fmtTicketsDAYS.AsInteger + vDays;
-        fmtTicketsTOTAL_TIME_FIX.AsDateTime := GetTotalTime(vTickets[vIndexTicket], vDays);
-        fmtTicketsDAYS_FIX.AsInteger := vDays;
-        fmtTickets.Post;
-      end
-      else begin
-        fmtTickets.Append;
-        fmtTicketsTICKET.AsString := vTicketFix;
-        fmtTicketsTOTAL_TIME.AsDateTime := GetTotalTime(fmtTicketsTICKET.AsString, vDays);
-        fmtTicketsDAYS.AsInteger := vDays;
-        fmtTicketsTOTAL_TIME_FIX.AsDateTime := GetTotalTime(fmtTicketsTICKET.AsString, vDays);
-        fmtTicketsDAYS_FIX.AsInteger := vDays;
-        fmtTickets.Post;
-      end;
-
-      for vIndexRecord := 0 to vRecords.Count - 1 do begin
-        fmtRecords.Append;
-        fmtRecordsTICKET.AsString := vTicketFix;
-        fmtRecordsDATE.AsDateTime := GetRecordDate(vRecords[vIndexRecord]);
-        fmtRecordsTIME_START.AsDateTime := GetRecordTimeStart(vRecords[vIndexRecord]);
-        fmtRecordsTIME_END.AsDateTime := GetRecordTimeEnd(vRecords[vIndexRecord]);
-        fmtRecordsTOTAL_TIME.AsDateTime := fmtRecordsTIME_END.AsDateTime - fmtRecordsTIME_START.AsDateTime;
-        fmtRecordsFIX.AsBoolean := True;
+        fmtRecordsTYPE.AsString := RecordTypeToString(vRecordType);
         fmtRecords.Post;
       end;
     end;
@@ -225,20 +198,6 @@ begin
 
     Loading := False;
   end;
-end;
-
-procedure TfrmLog.SetFixVisible;
-var
-  vFix: Boolean;
-begin
-  vFix := fmtRecords.Locate('FIX', True);
-
-  lblSubtitleCaption.Visible := vFix;
-  pnlSubtitleColor.Visible := vFix;
-  lblTotalTimeFix.Visible := vFix;
-  dbeTotalTimeFix.Visible := vFix;
-
-  fmtRecords.First;
 end;
 
 procedure TfrmLog.btnClearLogClick(Sender: TObject);
@@ -287,24 +246,42 @@ procedure TfrmLog.ColorGridLines(Sender: TObject; const Rect: TRect; DataCol: In
   State: TGridDrawState);
 begin
   if (gdSelected in State) or (gdFocused in State) then begin
-    TDBGrid(Sender).Canvas.Brush.Color := $00F5951D;
+    TDBGrid(Sender).Canvas.Brush.Color := $007D7D7D;
     TDBGrid(Sender).Canvas.Font.Color := clWhite;
 
-    if (Sender = dbgRecords) and (fmtRecordsFIX.AsBoolean) then
-      TDBGrid(Sender).Canvas.Brush.Color := $004646E6;
+    if (Sender = dbgTickets) then begin
+      if fmtTicketsCURRENT.AsBoolean then
+        TDBGrid(Sender).Canvas.Brush.Color := $00FA9600;
+    end
+    else if (Sender = dbgRecords) then begin
+      if fmtRecordsTYPE.AsString = 'A' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00C16895
+      else if fmtRecordsTYPE.AsString = 'T' then
+        TDBGrid(Sender).Canvas.Brush.Color := $0064B5DB
+      else if fmtRecordsTYPE.AsString = 'F' then
+        TDBGrid(Sender).Canvas.Brush.Color := $006464DB
+      else if fmtRecordsTYPE.AsString = 'H' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00DB9464;
+    end;
   end;
 
   if not(gdSelected in State) then begin
-    if Odd(TDBGrid(Sender).DataSource.DataSet.RecNo) then
-      TDBGrid(Sender).Canvas.Brush.Color := clWhite
-    else
-      TDBGrid(Sender).Canvas.Brush.Color := $00F8F8F8;
+    TDBGrid(Sender).Canvas.Brush.Color := clWhite;
+    TDBGrid(Sender).Canvas.Font.Color := clBlack;
 
-    if (Sender = dbgRecords) and (fmtRecordsFIX.AsBoolean) then begin
-      if Odd(TDBGrid(Sender).DataSource.DataSet.RecNo) then
-        TDBGrid(Sender).Canvas.Brush.Color := $00D7D7FF
-      else
-        TDBGrid(Sender).Canvas.Brush.Color := $00CDCDFF;
+    if (Sender = dbgTickets) then begin
+      if fmtTicketsCURRENT.AsBoolean then
+        TDBGrid(Sender).Canvas.Brush.Color := $00FFF3DF;
+    end
+    else if (Sender = dbgRecords) then begin
+      if fmtRecordsTYPE.AsString = 'A' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00F7DFEB
+      else if fmtRecordsTYPE.AsString = 'T' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00DCF0FA
+      else if fmtRecordsTYPE.AsString = 'F' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00DCDCFA
+      else if fmtRecordsTYPE.AsString = 'H' then
+        TDBGrid(Sender).Canvas.Brush.Color := $00FAE8DC;
     end;
   end;
 

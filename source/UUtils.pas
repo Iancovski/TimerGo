@@ -4,6 +4,9 @@ interface
 
 uses System.IniFiles, System.SysUtils, System.Classes;
 
+type
+  TRecordType = (rtAnalysis, rtDevelopment, rtTest, rtFix, rtHelp);
+
 function GetFormattedTime(ATime: TTime; ADays: Word): String;
 function GetRecordDate(ARecord: String): TDate;
 function GetRecordTimeEnd(ARecord: String): TTime;
@@ -12,6 +15,8 @@ function GetTotalTime(ATicket: String; var ADays: Word): TTime;
 function iif(ACondition: Boolean; AResultTrue, AResultFalse: Variant): Variant;
 function OnlyNumbers(AString: String): String;
 function ReadIni(ASection, AIdent: String): String;
+function RecordTypeToString(ARecordType: TRecordType): String;
+function StringToRecordType(ARecordType: String): TRecordType;
 procedure WriteIni(ASection, AIdent, AValue: String; AClear: Boolean = True);
 
 const
@@ -59,7 +64,7 @@ begin
   vRecords := TStringList.Create;
   try
     vRecords.Delimiter := ';';
-    vRecords.DelimitedText := ReadIni('Tickets', ATicket);
+    vRecords.DelimitedText := ReadIni('TICKETS', ATicket);
 
     for vIndexRecords := 0 to vRecords.Count - 1 do begin
       Result := Result + GetRecordTimeEnd(vRecords[vIndexRecords]) - GetRecordTimeStart(vRecords[vIndexRecords]);
@@ -100,6 +105,31 @@ end;
 function ReadIni(ASection, AIdent: String): String;
 begin
   Result := frmMain.IniFile.ReadString(UpperCase(ASection), UpperCase(AIdent), '');
+end;
+
+function RecordTypeToString(ARecordType: TRecordType): String;
+begin
+  case ARecordType of
+    rtAnalysis: Result := 'A';
+    rtDevelopment: Result := 'D';
+    rtTest: Result := 'T';
+    rtFix: Result := 'F';
+    rtHelp: Result := 'H';
+  end;
+end;
+
+function StringToRecordType(ARecordType: String): TRecordType;
+begin
+  if ARecordType = 'A' then
+    Result := rtAnalysis
+  else if ARecordType = 'D' then
+    Result := rtDevelopment
+  else if ARecordType = 'T' then
+    Result := rtTest
+  else if ARecordType = 'F' then
+    Result := rtFix
+  else if ARecordType = 'H' then
+    Result := rtHelp;
 end;
 
 procedure WriteIni(ASection, AIdent, AValue: String; AClear: Boolean);

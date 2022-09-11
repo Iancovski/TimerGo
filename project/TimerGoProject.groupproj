@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0001B610-17ED-46E8-9EE0-E5FB62CB9994}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\..\PlusComponents\project\PlusComponents.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="TimerGo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="PlusComponents">
+        <MSBuild Projects="..\..\PlusComponents\project\PlusComponents.dproj"/>
+    </Target>
+    <Target Name="PlusComponents:Clean">
+        <MSBuild Projects="..\..\PlusComponents\project\PlusComponents.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PlusComponents:Make">
+        <MSBuild Projects="..\..\PlusComponents\project\PlusComponents.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TimerGo">
+        <MSBuild Projects="TimerGo.dproj"/>
+    </Target>
+    <Target Name="TimerGo:Clean">
+        <MSBuild Projects="TimerGo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TimerGo:Make">
+        <MSBuild Projects="TimerGo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="PlusComponents;TimerGo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="PlusComponents:Clean;TimerGo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="PlusComponents:Make;TimerGo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

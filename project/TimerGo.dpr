@@ -11,9 +11,6 @@ uses
 
 {$R *.res}
 
-var
-  vHandle: THandle;
-  vHwnd: HWND;
 begin
   CreateMutex(nil, False, 'TimerGo');
 

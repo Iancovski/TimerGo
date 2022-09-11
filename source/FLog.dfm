@@ -129,7 +129,7 @@ object frmLog: TfrmLog
         Left = 1
         Top = 1
         Width = 167
-        Height = 479
+        Height = 455
         Margins.Left = 1
         Margins.Top = 1
         Margins.Right = 0
@@ -172,6 +172,65 @@ object frmLog: TfrmLog
             Visible = False
           end>
       end
+      object pnlTicketsSubtitle: TPanel
+        Left = 0
+        Top = 457
+        Width = 168
+        Height = 24
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = 4934475
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -11
+        Font.Name = 'Roboto'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 1
+        object lblSubtitle: TLabel
+          AlignWithMargins = True
+          Left = 5
+          Top = 5
+          Width = 48
+          Height = 14
+          Margins.Left = 5
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alClient
+          Caption = 'Legenda:'
+          Layout = tlCenter
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 45
+          ExplicitHeight = 13
+        end
+        object pnlSubtitleTicket: TPanel
+          AlignWithMargins = True
+          Left = 58
+          Top = 5
+          Width = 110
+          Height = 14
+          Margins.Left = 0
+          Margins.Top = 5
+          Margins.Right = 0
+          Margins.Bottom = 5
+          Align = alRight
+          BevelOuter = bvNone
+          Caption = 'Ticket atual'
+          Color = 16774111
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 51
+        end
+      end
     end
   end
   object pnlRecords: TPanel
@@ -206,39 +265,23 @@ object frmLog: TfrmLog
         ParentFont = False
       end
       object lblTotalTimeFix: TLabel
-        Left = 213
+        Left = 190
         Top = 11
-        Width = 130
+        Width = 153
         Height = 19
-        Caption = 'Tempo Total (Fix):'
+        Caption = 'Tempo Total (Ajuste):'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
         Font.Height = -16
         Font.Name = 'Roboto'
         Font.Style = []
         ParentFont = False
-      end
-      object lblSubtitleCaption: TLabel
-        Left = 40
-        Top = 0
-        Width = 21
-        Height = 40
-        Align = alLeft
-        Caption = 'Fix'
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -16
-        Font.Name = 'Roboto'
-        Font.Style = []
-        ParentFont = False
-        Layout = tlCenter
-        ExplicitHeight = 19
       end
       object dbeTotalTime: TDBEdit
         Left = 536
         Top = 6
         Width = 75
-        Height = 28
+        Height = 27
         AutoSelect = False
         DataField = 'TOTAL_TIME'
         DataSource = dsTickets
@@ -249,28 +292,12 @@ object frmLog: TfrmLog
         Left = 348
         Top = 6
         Width = 75
-        Height = 28
+        Height = 27
         AutoSelect = False
         DataField = 'TOTAL_TIME_FIX'
         DataSource = dsTickets
         ReadOnly = True
         TabOrder = 1
-      end
-      object pnlSubtitleColor: TPanel
-        AlignWithMargins = True
-        Left = 10
-        Top = 10
-        Width = 20
-        Height = 20
-        Margins.Left = 10
-        Margins.Top = 10
-        Margins.Right = 10
-        Margins.Bottom = 10
-        Align = alLeft
-        BevelOuter = bvNone
-        Color = 14145535
-        ParentBackground = False
-        TabOrder = 2
       end
     end
     object pnlRecordsGrid: TPanel
@@ -288,7 +315,7 @@ object frmLog: TfrmLog
         Left = 1
         Top = 1
         Width = 614
-        Height = 479
+        Height = 455
         Margins.Left = 1
         Margins.Top = 1
         Margins.Right = 1
@@ -353,6 +380,146 @@ object frmLog: TfrmLog
             Visible = True
           end>
       end
+      object pnlRecordsSubtitle: TPanel
+        Left = 0
+        Top = 457
+        Width = 616
+        Height = 24
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = 4934475
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -21
+        Font.Name = 'Roboto'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 3
+        object pnlSubtitleHelp: TPanel
+          AlignWithMargins = True
+          Left = 493
+          Top = 5
+          Width = 117
+          Height = 14
+          Margins.Left = 0
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'Aux'#237'lio'
+          Color = 16443612
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 371
+          ExplicitHeight = 15
+        end
+        object pnlSubtitleFix: TPanel
+          AlignWithMargins = True
+          Left = 371
+          Top = 5
+          Width = 117
+          Height = 14
+          Margins.Left = 0
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'Ajuste'
+          Color = 14474490
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 1
+          ExplicitLeft = 348
+          ExplicitHeight = 15
+        end
+        object pnlSubtitleTest: TPanel
+          AlignWithMargins = True
+          Left = 249
+          Top = 5
+          Width = 117
+          Height = 14
+          Margins.Left = 0
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'Teste'
+          Color = 14479610
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 2
+          ExplicitHeight = 15
+        end
+        object pnlSubtitleDevelopment: TPanel
+          AlignWithMargins = True
+          Left = 127
+          Top = 5
+          Width = 117
+          Height = 14
+          Margins.Left = 0
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'Desenvolvimento'
+          Color = clWhite
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 3
+          ExplicitHeight = 15
+        end
+        object pnlSubtitleAnalysis: TPanel
+          AlignWithMargins = True
+          Left = 5
+          Top = 5
+          Width = 117
+          Height = 14
+          Margins.Left = 5
+          Margins.Top = 5
+          Margins.Right = 5
+          Margins.Bottom = 5
+          Align = alLeft
+          BevelOuter = bvNone
+          Caption = 'An'#225'lise'
+          Color = 16244715
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Roboto'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 4
+          ExplicitHeight = 15
+        end
+      end
     end
     object pnlRecordsTitle: TPanel
       Left = 0
@@ -373,7 +540,6 @@ object frmLog: TfrmLog
   end
   object fmtTickets: TFDMemTable
     Active = True
-    AfterScroll = fmtTicketsAfterScroll
     FieldDefs = <
       item
         Name = 'TICKET'
@@ -386,7 +552,7 @@ object frmLog: TfrmLog
       end
       item
         Name = 'DAYS'
-        DataType = ftWord
+        DataType = ftInteger
       end
       item
         Name = 'TOTAL_TIME_FIX'
@@ -394,7 +560,11 @@ object frmLog: TfrmLog
       end
       item
         Name = 'DAYS_FIX'
-        DataType = ftWord
+        DataType = ftInteger
+      end
+      item
+        Name = 'CURRENT'
+        DataType = ftBoolean
       end>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -406,25 +576,28 @@ object frmLog: TfrmLog
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 72
-    Top = 472
+    Top = 448
     object fmtTicketsTICKET: TStringField
       FieldName = 'TICKET'
     end
     object fmtTicketsTOTAL_TIME: TTimeField
-      Alignment = taRightJustify
       FieldName = 'TOTAL_TIME'
       OnGetText = fmtTicketsTOTAL_TIMEGetText
+      DisplayFormat = 'HH:MM'
     end
-    object fmtTicketsDAYS: TWordField
+    object fmtTicketsDAYS: TIntegerField
       FieldName = 'DAYS'
     end
     object fmtTicketsTOTAL_TIME_FIX: TTimeField
-      Alignment = taRightJustify
       FieldName = 'TOTAL_TIME_FIX'
       OnGetText = fmtTicketsTOTAL_TIME_FIXGetText
+      DisplayFormat = 'HH:MM'
     end
-    object fmtTicketsDAYS_FIX: TWordField
+    object fmtTicketsDAYS_FIX: TIntegerField
       FieldName = 'DAYS_FIX'
+    end
+    object fmtTicketsCURRENT: TBooleanField
+      FieldName = 'CURRENT'
     end
   end
   object fmtRecords: TFDMemTable
@@ -452,8 +625,9 @@ object frmLog: TfrmLog
         DataType = ftTime
       end
       item
-        Name = 'FIX'
-        DataType = ftBoolean
+        Name = 'TYPE'
+        DataType = ftString
+        Size = 1
       end>
     IndexDefs = <>
     IndexFieldNames = 'TICKET'
@@ -468,7 +642,7 @@ object frmLog: TfrmLog
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
     Left = 680
-    Top = 472
+    Top = 448
     object fmtRecordsTICKET: TStringField
       FieldName = 'TICKET'
     end
@@ -487,18 +661,19 @@ object frmLog: TfrmLog
       FieldName = 'TOTAL_TIME'
       DisplayFormat = 'HH:MM'
     end
-    object fmtRecordsFIX: TBooleanField
-      FieldName = 'FIX'
+    object fmtRecordsTYPE: TStringField
+      FieldName = 'TYPE'
+      Size = 1
     end
   end
   object dsTickets: TDataSource
     DataSet = fmtTickets
     Left = 128
-    Top = 472
+    Top = 448
   end
   object dsRecords: TDataSource
     DataSet = fmtRecords
     Left = 736
-    Top = 472
+    Top = 448
   end
 end

@@ -7,7 +7,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, System.ImageList, Vcl.ImgList, System.Math,
-  System.IniFiles, System.DateUtils;
+  System.IniFiles, System.DateUtils, UUtils;
 
 type
   TfrmMain = class(TForm)
@@ -25,28 +25,27 @@ type
     pnlTimer: TPanel;
     lblTimer: TLabel;
     imgRecording: TImage;
-    imgFix: TImage;
     procedure imgPlayClick(Sender: TObject);
     procedure imgLogClick(Sender: TObject);
     procedure pnlRepositionMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure imgCloseClick(Sender: TObject);
-    procedure lblTicketDblClick(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lblTicketClick(Sender: TObject);
 
   private
     FPaused: Boolean;
     FTicket: String;
-    FFix: Boolean;
     FTotalTime: TTime;
+    FRecordType: TRecordType;
 
     procedure SetPaused(const Value: Boolean);
     procedure SetTicket(const Value: String);
     procedure SetTotalTime(const Value: TTime);
-    procedure SetFix(const Value: Boolean);
+    procedure SetRecordType(const Value: TRecordType);
 
   public
     IniFile: TIniFile;
@@ -57,7 +56,7 @@ type
 
     property Paused: Boolean read FPaused write SetPaused;
     property Ticket: String read FTicket write SetTicket;
-    property Fix: Boolean read FFix write SetFix;
+    property RecordType: TRecordType read FRecordType write SetRecordType;
     property TotalTime: TTime read FTotalTime write SetTotalTime;
 
     procedure InitializeVariables;
@@ -66,6 +65,7 @@ type
     procedure SaveTimeIni;
 
     function GetTicket(ACloseIfCancel: Boolean = False): String;
+    function GetLastRecordType(ALastTicket: String): TRecordType;
   end;
 
 var
@@ -75,7 +75,7 @@ implementation
 
 {$R *.dfm}
 
-uses FLog, FTicket, UUtils;
+uses FLog, FTicket;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -110,29 +110,44 @@ begin
   Ticket := GetTicket(True);
 end;
 
+function TfrmMain.GetLastRecordType(ALastTicket: String): TRecordType;
+begin
+  Result := rtDevelopment;
+
+  if Pos('#A', ALastTicket) > 0 then
+    Result := rtAnalysis
+  else if Pos('#D', ALastTicket) > 0 then
+    Result := rtDevelopment
+  else if Pos('#T', ALastTicket) > 0 then
+    Result := rtTest
+  else if Pos('#F', ALastTicket) > 0 then
+    Result := rtFix
+  else if Pos('#H', ALastTicket) > 0 then
+    Result := rtHelp;
+end;
+
 function TfrmMain.GetTicket(ACloseIfCancel: Boolean = False): String;
 var
-  vFix: Boolean;
+  vRecordType: TRecordType;
 begin
-  Result := ReadIni('Config', 'Ticket');
+  Result := ReadIni('SETTINGS', 'LAST_TICKET');
 
-  vFix := Pos('#FIX', UpperCase(Result)) > 0;
-  Result := StringReplace(Result, '#Fix', '', [rfIgnoreCase]);
+  vRecordType := GetLastRecordType(Result);
+  Result := StringReplace(Result, '#' + RecordTypeToString(vRecordType), '', [rfIgnoreCase]);
 
   frmTicket.edtTicket.Text := Result;
-  frmTicket.chkFix.Checked := vFix;
+  frmTicket.RecordType := vRecordType;
   frmTicket.ShowModal;
 
-  if (ACloseIfCancel) and (not frmTicket.Confirmed) then begin
+  if (ACloseIfCancel) and (not frmTicket.Confirmed) then
     Close;
-  end;
 
   if (frmTicket.Confirmed) then begin
     ChangingTicket := True;
 
     Result := frmTicket.edtTicket.Text;
-    Fix := frmTicket.chkFix.Checked;
-    TotalTime := GetTotalTime(Result, Days);
+    RecordType := frmTicket.RecordType;
+    TotalTime := GetTotalTime(Result + '#' + RecordTypeToString(RecordType), Days);
 
     ChangingTicket := False;
   end;
@@ -171,7 +186,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.lblTicketDblClick(Sender: TObject);
+procedure TfrmMain.lblTicketClick(Sender: TObject);
 begin
   if not Paused then begin
     if Application.MessageBox('Há uma contagem em andamento.' + sLineBreak +
@@ -188,8 +203,8 @@ end;
 procedure TfrmMain.LoadLastPosition;
 begin
   if Assigned(IniFile) then begin
-    Self.Top := StrToIntDef(ReadIni('Config', 'Top'), 0);
-    Self.Left := StrToIntDef(ReadIni('Config', 'Left'), 0);
+    Self.Top := StrToIntDef(ReadIni('SETTINGS', 'TOP'), 0);
+    Self.Left := StrToIntDef(ReadIni('SETTINGS', 'LEFT'), 0);
   end;
 end;
 
@@ -202,26 +217,17 @@ end;
 procedure TfrmMain.SaveLastPosition;
 begin
   if Assigned(IniFile) then begin
-    WriteIni('Config', 'Top', Self.Top.ToString);
-    WriteIni('Config', 'Left', Self.Left.ToString);
+    WriteIni('SETTINGS', 'TOP', Self.Top.ToString);
+    WriteIni('SETTINGS', 'LEFT', Self.Left.ToString);
   end;
 end;
 
 procedure TfrmMain.SaveTimeIni;
 begin
   if (TimeStart > 0) then begin
-    WriteIni('Tickets', Ticket + iif(Fix, '#Fix', ''), FormatDateTime('DD/MM/YYYY', Now) + '|' +
+    WriteIni('TICKETS', Ticket + '#' + RecordTypeToString(RecordType), FormatDateTime('DD/MM/YYYY', Now) + '|' +
       FormatDateTime('HH:MM:SS', TimeStart) + '-' + FormatDateTime('HH:MM:SS', Now), False);
   end;
-end;
-
-procedure TfrmMain.SetFix(const Value: Boolean);
-begin
-  FFix := Value;
-
-  imgFix.Visible := Fix;
-  if imgFix.Visible then
-    imgRecording.Left := 999;
 end;
 
 procedure TfrmMain.SetPaused(const Value: Boolean);
@@ -242,10 +248,15 @@ begin
   imgRecording.Visible := not Paused;
 end;
 
+procedure TfrmMain.SetRecordType(const Value: TRecordType);
+begin
+  FRecordType := Value;
+end;
+
 procedure TfrmMain.SetTicket(const Value: String);
 begin
   FTicket := Value;
-  WriteIni('Config', 'Ticket', Ticket + iif(Fix, '#Fix', ''));
+  WriteIni('SETTINGS', 'LAST_TICKET', Ticket + '#' + RecordTypeToString(RecordType));
 
   lblTicket.Caption := Ticket;
 end;
